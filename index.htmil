@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sidney Shop</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-color: #2b1d15; 
+            --text-color: #f5deb3; 
+            --hint-color: #d2b48c; 
+        }
+        
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 16px;
+            padding-bottom: 100px;
+            background-image: radial-gradient(circle at top right, #3d291f, transparent 50%);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-top: 10px;
+        }
+        
+        .header h1 {
+            font-size: 26px;
+            margin: 0 0 8px 0;
+            font-weight: 700;
+            color: #f5deb3;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p { color: var(--hint-color); margin: 0; font-size: 14px; }
+        
+        .category-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 20px 0 10px 5px;
+            color: #e6c280;
+            border-bottom: 1px solid rgba(230, 194, 128, 0.2);
+            padding-bottom: 5px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .product-card {
+            position: relative;
+            border-radius: 16px;
+            padding: 16px 12px;
+            text-align: center;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 2px solid transparent;
+        }
+        
+        .product-card:active { transform: scale(0.95); }
+        .product-card.selected { border-color: #f5deb3; box-shadow: 0 0 15px rgba(245, 222, 179, 0.4); }
+
+        .card-blonde { background: linear-gradient(135deg, #e6c280, #c99b5a); color: #2b1d15; }
+        .card-brown { background: linear-gradient(135deg, #8b5a2b, #5c3a21); color: #f5deb3; }
+        .card-mocha { background: linear-gradient(135deg, #a67c52, #7a5c3d); color: #fff; }
+        .card-choco { background: linear-gradient(135deg, #4a2c11, #2b1809); color: #e6c280; }
+        
+        .product-emoji { font-size: 32px; margin-bottom: 8px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+        .product-name { font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+        .product-price {
+            font-size: 13px; font-weight: 600; background: rgba(0, 0, 0, 0.2);
+            display: inline-block; padding: 3px 10px; border-radius: 12px;
+        }
+        .card-blonde .product-price { background: rgba(255, 255, 255, 0.4); }
+        
+        .bottom-button {
+            position: fixed; bottom: 20px; left: 16px; right: 16px;
+            background: linear-gradient(135deg, #c99b5a, #8b5a2b);
+            color: #fff; border: none; padding: 16px; border-radius: 12px;
+            font-size: 16px; font-weight: 700; cursor: pointer;
+            opacity: 0; transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none; box-shadow: 0 6px 20px rgba(139, 90, 43, 0.5);
+        }
+        .bottom-button.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .bottom-button:active { transform: scale(0.98); }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>☕ Сидни Шоп</h1>
+        <p>Премиальные товары в один клик</p>
+    </div>
+    
+    <div id="catalog"></div>
+    
+    <button class="bottom-button" id="buyBtn" onclick="buySelected()">Купить</button>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+
+        const catalogData = [
+            {
+                title: "📱 Аккаунты (Смена номера)",
+                items: [
+                    { id: "mm", emoji: "🇲🇲", name: "Мьянма", price: 150, color: "card-blonde" },
+                    { id: "bd", emoji: "🇧🇩", name: "Бангладеш", price: 150, color: "card-brown" },
+                    { id: "us", emoji: "🇺🇸", name: "США", price: 150, color: "card-mocha" },
+                    { id: "kz", emoji: "🇰🇿", name: "Казахстан", price: 200, color: "card-choco" },
+                    { id: "cn", emoji: "🇨🇳", name: "Китай", price: 1050, color: "card-blonde" },
+                    { id: "by", emoji: "🇧🇾", name: "Беларусь", price: 850, color: "card-brown" }
+                ]
+            },
+            {
+                title: "🎮 Игры и Донат",
+                items: [
+                    { id: "brawl_plus", emoji: "🎫", name: "Brawl Pass Plus", price: 1300, color: "card-choco" },
+                    { id: "brawl_pass", emoji: "🎫", name: "Brawl Pass", price: 1000, color: "card-mocha" },
+                    { id: "robux", emoji: "⚡", name: "Робуксы", price: 90, color: "card-blonde" },
+                    { id: "genshin", emoji: "💎", name: "Геншин (60)", price: 100, color: "card-brown" }
+                ]
+            },
+            {
+                title: "💎 Telegram",
+                items: [
+                    { id: "tgp_3", emoji: "🥹", name: "TG Premium 3 мес", price: 1100, color: "card-blonde" },
+                    { id: "tgp_6", emoji: "🥹", name: "TG Premium 6 мес", price: 1500, color: "card-mocha" },
+                    { id: "tgp_12", emoji: "🥹", name: "TG Premium 12 мес", price: 2500, color: "card-choco" }
+                ]
+            }
+        ];
+
+        let selectedProductId = null;
+        let selectedElement = null;
+        const catalogDiv = document.getElementById('catalog');
+
+        catalogData.forEach(category => {
+            const title = document.createElement('div');
+            title.className = 'category-title';
+            title.textContent = category.title;
+            catalogDiv.appendChild(title);
+
+            const grid = document.createElement('div');
+            grid.className = 'product-grid';
+
+            category.items.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card ' + product.color;
+                card.onclick = () => selectProduct(product.id, card);
+                card.innerHTML = '<div class="product-emoji">' + product.emoji + '</div>' +
+                                 '<div class="product-name">' + product.name + '</div>' +
+                                 '<div class="product-price">' + product.price + ' ₽</div>';
+                grid.appendChild(card);
+            });
+            catalogDiv.appendChild(grid);
+        });
+
+        function selectProduct(id, element) {
+            if (selectedElement) selectedElement.classList.remove('selected');
+            element.classList.add('selected');
+            selectedElement = element;
+            selectedProductId = id;
+            
+            const btn = document.getElementById('buyBtn');
+            btn.classList.add('show');
+            
+            let pName = "";
+            catalogData.forEach(function(c) {
+                c.items.forEach(function(i) {
+                    if(i.id === id) pName = i.name;
+                });
+            });
+            btn.textContent = 'Купить ' + pName;
+        }
+
+        function buySelected() {
+            if (!selectedProductId) return;
+            
+            tg.sendData(JSON.stringify({ 
+                action: "buy", 
+                item_id: selectedProductId 
+            }));
+            
+            document.getElementById('buyBtn').textContent = "Обработка...";
+        }
+    </script>
+</body>
+</html>
