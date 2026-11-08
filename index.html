@@ -1,231 +1,135 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Портфолия и магазин</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sidney Shop</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        * {
-            margin: 01;
-            padding: 01;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #807cd6 100%);
-            min-height: 100vh;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        /* Навигация */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 60px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: white;
-            letter-spacing: 1px;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 30px;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: opacity 0.3s;
-        }
-
-        nav a:hover {
-            opacity: 0.7;
-        }
-
-        /* Главный экран */
-        .hero {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 100px 20px;
-            color: white;
-        }
-
-        .hero h1 {
-            font-size: 64px;
-            font-weight: 800;
-            margin-bottom: 20px;
-            line-height: 1.1;
-            animation: fadeInUp 1s ease;
-        }
-
-        .hero p {
-            font-size: 20px;
-            max-width: 600px;
-            margin-bottom: 40px;
-            opacity: 0.9;
-            animation: fadeInUp 1s ease 0.2s both;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 16px 40px;
-            background: white;
-            color: #764ba2;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 16px;
-            transition: all 0.3s;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            animation: fadeInUp 1s ease 0.4s both;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Карточки */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            padding: 80px 60px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .card {
-            background: white;
-            padding: 40px 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.4s;
-            text-align: center;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-        }
-
-        .card .icon {
-            font-size: 48px;
-            margin-bottom: 20px;
-        }
-
-        .card h3 {
-            font-size: 22px;
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .card p {
-            color: #666;
-            font-size: 15px;
-        }
-
-        /* Подвал */
-        footer {
-            text-align: center;
-            padding: 40px;
-            color: white;
-            opacity: 0.8;
-            font-size: 14px;
-        }
-
-        /* Анимация */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Адаптивность для телефонов */
-        @media (max-width: 768px) {
-            nav {
-                padding: 15px 20px;
-            }
-            nav ul {
-                gap: 15px;
-                font-size: 14px;
-            }
-            .hero h1 {
-                font-size: 36px;
-            }
-            .hero p {
-                font-size: 16px;
-            }
-            .features {
-                padding: 40px 20px;
-            }
-        }
+        :root { --bg-color: #2b1d15; --text-color: #f5deb3; --hint-color: #d2b48c; }
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 16px; padding-bottom: 120px; background-image: radial-gradient(circle at top right, #3d291f, transparent 50%); }
+        .header { text-align: center; margin-bottom: 20px; margin-top: 10px; }
+        .header h1 { font-size: 26px; margin: 0 0 8px 0; font-weight: 700; color: #f5deb3; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .header p { color: var(--hint-color); margin: 0; font-size: 14px; }
+        .category-title { font-size: 18px; font-weight: 600; margin: 20px 0 10px 5px; color: #e6c280; border-bottom: 1px solid rgba(230, 194, 128, 0.2); padding-bottom: 5px; }
+        .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .product-card { position: relative; border-radius: 16px; padding: 16px 12px; text-align: center; cursor: pointer; overflow: hidden; transition: all 0.2s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: 2px solid transparent; }
+        .product-card:active { transform: scale(0.95); }
+        .card-blonde { background: linear-gradient(135deg, #e6c280, #c99b5a); color: #2b1d15; }
+        .card-brown { background: linear-gradient(135deg, #8b5a2b, #5c3a21); color: #f5deb3; }
+        .card-mocha { background: linear-gradient(135deg, #a67c52, #7a5c3d); color: #fff; }
+        .card-choco { background: linear-gradient(135deg, #4a2c11, #2b1809); color: #e6c280; }
+        .product-emoji { font-size: 32px; margin-bottom: 8px; }
+        .product-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+        .product-price { font-size: 12px; font-weight: 600; background: rgba(0,0,0,0.2); display: inline-block; padding: 3px 8px; border-radius: 12px; }
+        .card-blonde .product-price { background: rgba(255,255,255,0.4); }
+        
+        .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #1f140e; padding: 16px; border-top-left-radius: 20px; border-top-right-radius: 20px; box-shadow: 0 -4px 20px rgba(0,0,0,0.5); display: flex; justify-content: space-between; align-items: center; z-index: 10; }
+        .cart-info { font-size: 16px; font-weight: 600; }
+        .cart-btn { background: linear-gradient(135deg, #c99b5a, #8b5a2b); color: #fff; border: none; padding: 12px 24px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; }
+        
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 20; justify-content: center; align-items: flex-end; }
+        .modal-content { background: #2b1d15; width: 100%; padding: 20px; border-top-left-radius: 20px; border-top-right-radius: 20px; }
+        .modal-title { font-size: 20px; margin-bottom: 15px; text-align: center; color: #e6c280; }
+        .pay-option { background: #3d291f; padding: 15px; border-radius: 12px; margin-bottom: 10px; text-align: center; cursor: pointer; border: 1px solid #5c3a21; }
+        .pay-option:active { background: #4a3428; }
+        .close-modal { text-align: center; color: #888; margin-top: 15px; cursor: pointer; }
     </style>
 </head>
 <body>
+    <div class="header">
+        <h1>☕ Сидни Шоп</h1>
+        <p>Премиальные товары в один клик</p>
+    </div>
+    <div id="catalog"></div>
 
-    <!-- Навигация -->
-    <nav>
-        <div class="logo">MySite</div>
-        <ul>
-            <li><a href="#home">Главная</a></li>
-            <li><a href="#features">Возможности</a></li>
-            <li><a href="#contact">Контакты</a></li>
-        </ul>
-    </nav>
+    <div class="bottom-bar">
+        <div class="cart-info">🛒 Корзина: <span id="cart-count">0</span> шт.</div>
+        <button class="cart-btn" onclick="openCheckout()">Оформить</button>
+    </div>
 
-    <!-- Главный экран -->
-    <section class="hero" id="home">
-        <h1>Создай свой<br>красивый сайт</h1>
-        <p>Современный дизайн, плавные анимации и адаптивность — всё в одном файле.</p>
-        <a href="#features" class="btn">Начать →</a>
-    </section>
-
-    <!-- Карточки -->
-    <section class="features" id="features">
-        <div class="card">
-            <div class="icon">🎨</div>
-            <h3>Красивый дизайн</h3>
-            <p>Градиенты, тени и анимации делают сайт современным и живым.</p>
+    <div class="modal" id="checkoutModal">
+        <div class="modal-content">
+            <div class="modal-title">Выберите способ оплаты</div>
+            <div class="pay-option" onclick="pay('stars')">⭐ Оплатить Звездами</div>
+            <div class="pay-option" onclick="pay('rubles')">💳 Оплатить Рублями (ВТБ)</div>
+            <div class="close-modal" onclick="closeCheckout()">Отмена</div>
         </div>
-        <div class="card">
-            <div class="icon">⚡</div>
-            <h3>Быстро</h3>
-            <p>Весь код в одном файле — сайт загружается моментально.</p>
-        </div>
-        <div class="card">
-            <div class="icon">📱</div>
-            <h3>Адаптивность</h3>
-            <p>Отлично выглядит и на телефоне, и на большом мониторе.</p>
-        </div>
-    </section>
+    </div>
 
-    <!-- Подвал -->
-    <footer id="contact">
-        © 2026 Мой первый сайт. Сделано своими руками.
-    </footer>
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.ready(); tg.expand();
 
+        const catalogData = [
+            { title: "📱 Аккаунты", items: [
+                { id: "mm", emoji: "🇲🇲", name: "Мьянма", price_rub: 150, price_stars: 150, color: "card-blonde" },
+                { id: "us", emoji: "🇺🇸", name: "США", price_rub: 150, price_stars: 150, color: "card-mocha" },
+                { id: "kz", emoji: "🇰🇿", name: "Казахстан", price_rub: 200, price_stars: 200, color: "card-choco" }
+            ]},
+            { title: "🎮 Игры", items: [
+                { id: "brawl_plus", emoji: "🎫", name: "Brawl Pass Plus", price_rub: 1300, price_stars: 1300, color: "card-choco" },
+                { id: "robux", emoji: "⚡", name: "Робуксы", price_rub: 90, price_stars: 90, color: "card-blonde" }
+            ]}
+        ];
+
+        let cart = [];
+        const catalogDiv = document.getElementById('catalog');
+
+        catalogData.forEach(category => {
+            const title = document.createElement('div');
+            title.className = 'category-title';
+            title.textContent = category.title;
+            catalogDiv.appendChild(title);
+
+            const grid = document.createElement('div');
+            grid.className = 'product-grid';
+
+            category.items.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card ' + product.color;
+                card.onclick = () => addToCart(product);
+                card.innerHTML = '<div class="product-emoji">' + product.emoji + '</div>' +
+                                 '<div class="product-name">' + product.name + '</div>' +
+                                 '<div class="product-price">' + product.price_rub + ' ₽ / ' + product.price_stars + ' ⭐</div>';
+                grid.appendChild(card);
+            });
+            catalogDiv.appendChild(grid);
+        });
+
+        function addToCart(product) {
+            cart.push(product);
+            document.getElementById('cart-count').textContent = cart.length;
+            tg.HapticFeedback.impactOccurred('light');
+        }
+
+        function openCheckout() {
+            if (cart.length === 0) {
+                tg.showAlert("Корзина пуста!");
+                return;
+            }
+            document.getElementById('checkoutModal').style.display = 'flex';
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkoutModal').style.display = 'none';
+        }
+
+        function pay(method) {
+            const itemIds = cart.map(item => item.id);
+            const totalStars = cart.reduce((sum, item) => sum + item.price_stars, 0);
+            
+            tg.sendData(JSON.stringify({ 
+                action: "buy_cart", 
+                items: itemIds, 
+                method: method,
+                total_stars: totalStars
+            }));
+            
+            closeCheckout();
+            document.querySelector('.cart-btn').textContent = "Обработка...";
+        }
+    </script>
 </body>
 </html>
